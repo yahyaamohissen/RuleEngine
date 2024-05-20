@@ -1,0 +1,92 @@
+[
+  {
+    "WorkflowName": "Discount",
+    "Rules": [
+      {
+        "RuleName": "GiveDiscount10",
+        "SuccessEvent": "{\"Tier\": \"Normal\",\"Id\": 2, \"Amount\": 5 }",
+        "ErrorMessage": "One or more adjust rules failed.",
+        "ErrorType": "Error",
+        "RuleExpressionType": "LambdaExpression",
+        "Expression": "input1.BasicInfo.Country == \"india\" AND input1.BasicInfo.LoyaltyFactor <= 2 AND input1.BasicInfo.TotalPurchasesToDate >= 5000 AND input1.OrderInfo.TotalOrders > 2 AND input1.TelemetryInfo.NoOfVisitsPerMonth > 2"
+      },
+      {
+        "RuleName": "GiveDiscount20",
+        "SuccessEvent": "{\"Tier\": \"Normal\",\"Id\": 2, \"Amount\": 5 }",
+        "ErrorMessage": "One or more adjust rules failed.",
+        "ErrorType": "Error",
+        "RuleExpressionType": "LambdaExpression",
+        "Expression": "input1.BasicInfo.Country == \"india\" AND input1.BasicInfo.LoyaltyFactor == 3 AND input1.BasicInfo.TotalPurchasesToDate >= 10000 AND input1.OrderInfo.TotalOrders > 2 AND input1.TelemetryInfo.NoOfVisitsPerMonth > 2"
+      },
+      {
+        "RuleName": "GiveDiscount25",
+        "SuccessEvent": "{\"Tier\": \"Gold\",\"Id\": 2, \"Amount\": 55 }",
+        "ErrorMessage": "One or more adjust rules failed.",
+        "ErrorType": "Error",
+        "RuleExpressionType": "LambdaExpression",
+        "Expression": "input1.BasicInfo.Country != \"india\" AND input1.BasicInfo.LoyaltyFactor >= 2 AND input1.BasicInfo.TotalPurchasesToDate >= 10000 AND input1.OrderInfo.TotalOrders > 2 AND input1.TelemetryInfo.NoOfVisitsPerMonth > 5"
+      },
+      {
+        "RuleName": "GiveDiscount30",
+        "SuccessEvent": "{\"Tier\": \"Gold+\",\"Id\": 2, \"Amount\": 65 }",
+        "ErrorMessage": "One or more adjust rules failed.",
+        "ErrorType": "Error",
+        "RuleExpressionType": "LambdaExpression",
+        "Expression": "input1.BasicInfo.LoyaltyFactor > 3 AND input1.BasicInfo.TotalPurchasesToDate >= 50000 AND input1.BasicInfo.TotalPurchasesToDate <= 100000 AND input1.OrderInfo.TotalOrders > 5 AND input1.TelemetryInfo.NoOfVisitsPerMonth > 15"
+      },
+      {
+        "RuleName": "GiveDiscount30NestedOrExample",
+        "SuccessEvent": "{\"Tier\": \"Silver\",\"Id\": 2, \"Amount\": 25 }",
+        "ErrorMessage": "One or more adjust rules failed.",
+        "ErrorType": "Error",
+        "Operator": "OrElse",
+        "Rules": [
+          {
+            "RuleName": "IsLoyalAndHasGoodSpend",
+            "ErrorMessage": "One or more adjust rules failed.",
+            "ErrorType": "Error",
+            "RuleExpressionType": "LambdaExpression",
+            "Expression": "input1.BasicInfo.LoyaltyFactor > 3 AND input1.BasicInfo.TotalPurchasesToDate >= 50000 AND input1.BasicInfo.TotalPurchasesToDate <= 100000"
+          },
+          {
+            "RuleName": "OrHasHighNumberOfTotalOrders",
+            "ErrorMessage": "One or more adjust rules failed.",
+            "ErrorType": "Error",
+            "RuleExpressionType": "LambdaExpression",
+            "Expression": "input1.OrderInfo.TotalOrders > 5"
+          }
+        ]
+      },
+      {
+        "RuleName": "GiveDiscount35NestedAndExample",
+        "SuccessEvent": "{\"Tier\": \"Selver+\",\"Id\": 2, \"Amount\": 45 }",
+        "ErrorMessage": "One or more adjust rules failed.",
+        "ErrorType": "Error",
+        "Operator": "AndAlso",
+        "Rules": [
+          {
+            "RuleName": "IsLoyal",
+            "ErrorMessage": "One or more adjust rules failed.",
+            "ErrorType": "Error",
+            "RuleExpressionType": "LambdaExpression",
+            "Expression": "input1.BasicInfo.LoyaltyFactor > 3"
+          },
+          {
+            "RuleName": "AndHasTotalPurchased100000",
+            "ErrorMessage": "One or more adjust rules failed.",
+            "ErrorType": "Error",
+            "RuleExpressionType": "LambdaExpression",
+            "Expression": "input1.BasicInfo.TotalPurchasesToDate >= 100000"
+          },
+          {
+            "RuleName": "AndOtherConditions",
+            "ErrorMessage": "One or more adjust rules failed.",
+            "ErrorType": "Error",
+            "RuleExpressionType": "LambdaExpression",
+            "Expression": "input1.OrderInfo.TotalOrders > 15 AND input1.TelemetryInfo.NoOfVisitsPerMonth > 25"
+          }
+        ]
+      }
+    ]
+  }
+]
